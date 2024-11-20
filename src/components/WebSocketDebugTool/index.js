@@ -18,6 +18,7 @@ class WebSocketDebugTool extends React.PureComponent {
     connected: false,  // 是否已经建立连接
     sockjs: false,  // 是否启用sockjs
     stomp: false,  // 是否启用stomp
+    subscription: null,
 
     // controlled components相关状态
     url: '',
@@ -178,7 +179,7 @@ class WebSocketDebugTool extends React.PureComponent {
     }
 
     try {
-      this.client.subscribe(this.state.stompSubscribeDestination, this.getSubscribeCallback(this.state.stompSubscribeDestination));
+      this.state.subscription = this.client.subscribe(this.state.stompSubscribeDestination, this.getSubscribeCallback(this.state.stompSubscribeDestination));
       this.info(`subscribe destination ${this.state.stompSubscribeDestination} success`);
     } catch (e) {
       console.error('subscribe fail: %o', e);
@@ -191,6 +192,35 @@ class WebSocketDebugTool extends React.PureComponent {
       this.info(`Receive subscribed message from destination ${destination}, content = ${content}`)
     };
   }
+
+  /**
+   * stomp unsubscribe
+   */
+  unsubscribe = () => {
+    if (this.state.subscription == null) {
+      this.error(`Has no subscription`);
+      return;
+    }
+
+    if (!this.state.stomp) {
+      this.error(`Not in STOMP mode`);
+      return;
+    }
+
+    if (!this.state.connected) {
+      this.error(`Not Connected yet`);
+      return;
+    }
+
+    try {
+      this.state.subscription.unsubscribe();
+      this.state.subscription = null;
+      this.info(`unsubscribe destination ${this.state.stompSubscribeDestination} success`);
+    } catch (e) {
+      console.error('unsubscribe fail: %o', e);
+      this.error(`unsubscribe destination ${this.state.stompSubscribeDestination} fail, message = ${e.message}`);
+    }
+  };
 
 
   // controlled component相关handle方法
@@ -340,10 +370,10 @@ class WebSocketDebugTool extends React.PureComponent {
           <FormItem label="STOMP subscribe destination">
             <Input placeholder="e.g. /topic/test" style={{ width:'230px' }} value={this.state.stompSubscribeDestination}
                    onChange={this.handleStompSubscribeDestinationChange}
-                   disabled={!(this.state.stomp && this.state.connected)}/>
+                   disabled={!(this.state.stomp && this.state.connected) || this.state.subscription}/>
           </FormItem>
           <FormItem>
-            <Button type="primary" disabled={!(this.state.stomp && this.state.connected)} onClick={this.subscribe}>Subscribe</Button>
+            <Button type="primary" disabled={!(this.state.stomp && this.state.connected)} onClick={this.state.subscription ? this.unsubscribe : this.subscribe}>{this.state.subscription ? 'Unsubscribe' : 'Subscribe' }</Button>
           </FormItem>
         </Form>
         <Form inline style={{ marginTop:'5px' }}>
