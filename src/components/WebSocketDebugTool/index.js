@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import SockJS from 'sockjs-client';
 import StompJS from 'stompjs/lib/stomp.js';
 import './index.less';
@@ -61,7 +61,7 @@ class WebSocketDebugTool extends React.PureComponent {
         }
 
         client.connect(connectHeader, () => {
-          that.setState({connected: true});
+          that.setState({ connected: true });
           that.info(`Connect STOMP server success, url = ${that.state.url}, connectHeader = ${that.state.stompConnectHeader}`)
         });
 
@@ -76,7 +76,7 @@ class WebSocketDebugTool extends React.PureComponent {
         client.onopen = e => {
           console.debug('Connect success %o', e);
           that.info(`Connect success, url = ${that.state.url}`);
-          that.setState({connected: true});
+          that.setState({ connected: true });
         };
         client.onmessage = e => {
           console.debug('Received message %o', e);
@@ -85,7 +85,7 @@ class WebSocketDebugTool extends React.PureComponent {
         client.onerror = e => {
           console.error('Connect error %o', e);
           that.error(`Connect error, message = ${e.data}, view chrome console for detail`);
-          that.setState({connected: false});
+          that.setState({ connected: false });
         };
       }
 
@@ -94,7 +94,7 @@ class WebSocketDebugTool extends React.PureComponent {
     } catch (e) {
       console.error('Connect error %o', e);
       that.error(`Connect error, message = ${e.message}, view chrome console for detail`);
-      that.setState({connected: false});
+      that.setState({ connected: false });
       return;
     }
   };
@@ -115,7 +115,8 @@ class WebSocketDebugTool extends React.PureComponent {
         this.client.close();
       }
       this.info('Close Connection Success');
-      this.setState({connected: false});
+      this.setState({ connected: false });
+      this.setState({ subscription: null });
     } catch (e) {
       console.log('disconnect fail %o', e);
       this.error(`disconnect fail, message = ${e.message}, view chrome console for detail`);
@@ -228,7 +229,7 @@ class WebSocketDebugTool extends React.PureComponent {
 
 
   handleUrlChange = e => {
-    this.setState({url: e.target.value});
+    this.setState({ url: e.target.value });
   };
 
   handleConnectTypeChange = value => {
@@ -241,27 +242,27 @@ class WebSocketDebugTool extends React.PureComponent {
         stomp = true;
       }
     }
-    this.setState({sockjs, stomp});
+    this.setState({ sockjs, stomp });
   };
 
   handleStompConnectHeaderChange = e => {
-    this.setState({stompConnectHeader: e.target.value});
+    this.setState({ stompConnectHeader: e.target.value });
   };
 
   handleStompSubscribeDestinationChange = e => {
-    this.setState({stompSubscribeDestination: e.target.value});
+    this.setState({ stompSubscribeDestination: e.target.value });
   };
 
   handleStompSendHeaderChange = e => {
-    this.setState({stompSendHeader: e.target.value});
+    this.setState({ stompSendHeader: e.target.value });
   };
 
   handleStompSendDestinationChange = e => {
-    this.setState({stompSendDestination: e.target.value});
+    this.setState({ stompSendDestination: e.target.value });
   };
 
   handleMessageContentChange = e => {
-    this.setState({messageContent: e.target.value});
+    this.setState({ messageContent: e.target.value });
   };
 
   /**
@@ -291,7 +292,7 @@ class WebSocketDebugTool extends React.PureComponent {
     const length = this.state.message.length;
     const newMessage = this.state.message.slice(0, length);
     newMessage.push(message);
-    this.setState({message: newMessage}, this.scrollToBottom);
+    this.setState({ message: newMessage }, this.scrollToBottom);
   };
 
   /**
@@ -308,7 +309,7 @@ class WebSocketDebugTool extends React.PureComponent {
    * 清除console div中的内容
    */
   clearOutput = () => {
-    this.setState({message: []});
+    this.setState({ message: [] });
   };
 
 
@@ -323,14 +324,14 @@ class WebSocketDebugTool extends React.PureComponent {
     }
 
     // 我的布局真是一团糟...
-    return <div style={{ height:'100%' }}>
+    return <div style={{ height: '100%' }}>
 
       {/*fork me on github*/}
       <a href="https://github.com/jiangxy">
-        <img style={{position: 'absolute', top: 0, right: 0, border: 0}}
-             src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
-             alt="Fork me on GitHub"
-             data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"/>
+        <img style={{ position: 'absolute', top: 0, right: 0, border: 0 }}
+          src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
+          alt="Fork me on GitHub"
+          data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" />
       </a>
 
       {/*common input*/}
@@ -338,20 +339,20 @@ class WebSocketDebugTool extends React.PureComponent {
         <Form inline>
           <FormItem label="URL">
             <Input prefix={<Icon type="link" style={{ fontSize: 13 }} />}
-                   placeholder="URL to connect, 'ws://' for raw WebSocket or 'http://' for SockJS"
-                   style={{ width:'400px' }} value={this.state.url} onChange={this.handleUrlChange}
-                   disabled={this.state.connected}/>
+              placeholder="URL to connect, 'ws://' for raw WebSocket or 'http://' for SockJS"
+              style={{ width: '400px' }} value={this.state.url} onChange={this.handleUrlChange}
+              disabled={this.state.connected} />
           </FormItem>
           <FormItem>
             <Button type="primary"
-                    onClick={this.state.connected ? this.disconnect : this.connect}>{this.state.connected ? 'Disconnect' : 'Connect'}</Button>
+              onClick={this.state.connected ? this.disconnect : this.connect}>{this.state.connected ? 'Disconnect' : 'Connect'}</Button>
           </FormItem>
         </Form>
         <Form inline>
           <FormItem label="Connect Type">
-            <CheckboxGroup options={[{label:'SockJS',value:'SockJS'},{label:'STOMP',value:'STOMP'}]}
-                           value={connectTypeArray} onChange={this.handleConnectTypeChange}
-                           disabled={this.state.connected}/>
+            <CheckboxGroup options={[{ label: 'SockJS', value: 'SockJS' }, { label: 'STOMP', value: 'STOMP' }]}
+              value={connectTypeArray} onChange={this.handleConnectTypeChange}
+              disabled={this.state.connected} />
           </FormItem>
         </Form>
       </div>
@@ -359,35 +360,35 @@ class WebSocketDebugTool extends React.PureComponent {
       {/*STOMP相关输入项, 注意disabled条件, 必须上面勾选STOMP后才可用*/}
       <div className="stomp">
         <pre>available if Connect Type = STOMP</pre>
-        <Form inline style={{ marginTop:'5px' }}>
+        <Form inline style={{ marginTop: '5px' }}>
           <FormItem label="STOMP connect header">
-            <Input placeholder='json string, e.g. {"header1":"value1", "header2":"value2"}' style={{ width:'400px' }}
-                   value={this.state.stompConnectHeader} onChange={this.handleStompConnectHeaderChange}
-                   disabled={!(this.state.stomp && !this.state.connected)}/>
+            <Input placeholder='json string, e.g. {"header1":"value1", "header2":"value2"}' style={{ width: '400px' }}
+              value={this.state.stompConnectHeader} onChange={this.handleStompConnectHeaderChange}
+              disabled={!(this.state.stomp && !this.state.connected)} />
           </FormItem>
         </Form>
-        <Form inline style={{ marginTop:'5px' }}>
+        <Form inline style={{ marginTop: '5px' }}>
           <FormItem label="STOMP subscribe destination">
-            <Input placeholder="e.g. /topic/test" style={{ width:'230px' }} value={this.state.stompSubscribeDestination}
-                   onChange={this.handleStompSubscribeDestinationChange}
-                   disabled={!(this.state.stomp && this.state.connected) || this.state.subscription}/>
+            <Input placeholder="e.g. /topic/test" style={{ width: '230px' }} value={this.state.stompSubscribeDestination}
+              onChange={this.handleStompSubscribeDestinationChange}
+              disabled={!(this.state.stomp && this.state.connected) || this.state.subscription} />
           </FormItem>
           <FormItem>
-            <Button type="primary" disabled={!(this.state.stomp && this.state.connected)} onClick={this.state.subscription ? this.unsubscribe : this.subscribe}>{this.state.subscription ? 'Unsubscribe' : 'Subscribe' }</Button>
+            <Button type="primary" disabled={!(this.state.stomp && this.state.connected)} onClick={this.state.subscription ? this.unsubscribe : this.subscribe}>{this.state.subscription ? 'Unsubscribe' : 'Subscribe'}</Button>
           </FormItem>
         </Form>
-        <Form inline style={{ marginTop:'5px' }}>
+        <Form inline style={{ marginTop: '5px' }}>
           <FormItem label="STOMP send header">
-            <Input placeholder='json string, e.g. {"header1":"value1", "header2":"value2"}' style={{ width:'400px' }}
-                   value={this.state.stompSendHeader} onChange={this.handleStompSendHeaderChange}
-                   disabled={!(this.state.stomp && this.state.connected)}/>
+            <Input placeholder='json string, e.g. {"header1":"value1", "header2":"value2"}' style={{ width: '400px' }}
+              value={this.state.stompSendHeader} onChange={this.handleStompSendHeaderChange}
+              disabled={!(this.state.stomp && this.state.connected)} />
           </FormItem>
         </Form>
-        <Form inline style={{ marginTop:'5px' }}>
+        <Form inline style={{ marginTop: '5px' }}>
           <FormItem label="STOMP send destination">
-            <Input placeholder="e.g. /app/test" style={{ width:'400px' }} value={this.state.stompSendDestination}
-                   onChange={this.handleStompSendDestinationChange}
-                   disabled={!(this.state.stomp && this.state.connected)}/>
+            <Input placeholder="e.g. /app/test" style={{ width: '400px' }} value={this.state.stompSendDestination}
+              onChange={this.handleStompSendDestinationChange}
+              disabled={!(this.state.stomp && this.state.connected)} />
           </FormItem>
         </Form>
       </div>
@@ -396,9 +397,9 @@ class WebSocketDebugTool extends React.PureComponent {
       <div className="message">
         <Form inline>
           <FormItem label="Message Content">
-            <Input placeholder="message content sent to server" style={{ width:'290px' }}
-                   value={this.state.messageContent} onChange={this.handleMessageContentChange}
-                   disabled={!this.state.connected}/>
+            <Input placeholder="message content sent to server" style={{ width: '290px' }}
+              value={this.state.messageContent} onChange={this.handleMessageContentChange}
+              disabled={!this.state.connected} />
           </FormItem>
           <FormItem>
             <Button type="primary" disabled={!this.state.connected} onClick={this.send}>Send</Button>
@@ -412,7 +413,7 @@ class WebSocketDebugTool extends React.PureComponent {
       {/*console output*/}
       <div className="output">
         <div className="window">
-          <div className="body" ref={(div) => {this.consoleOutput = div;}}>
+          <div className="body" ref={(div) => { this.consoleOutput = div; }}>
             <pre>
               <div className="comment"># console output</div>
 
