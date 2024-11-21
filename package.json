@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A tool to debug websocket/sockjs/stomp",
   "author": "jiangxy <foolbeargm@gmail.com>",
+  "homepage": "https://niceman114.github.io/websocket-test-client",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=5.0 <7",
@@ -53,7 +54,7 @@
     "webpack-dev-server": "1.16.2"
   },
   "scripts": {
-    "prod": "cross-env NODE_ENV=production webpack --progress --colors --config webpack.config.prod.js -p --display-error-details",
+    "build": "cross-env NODE_ENV=production webpack --progress --colors --config webpack.config.prod.js -p --display-error-details",
     "clean": "rimraf dist/*bundle* dist/*vendor* dist/*index*",
     "dev": "webpack-dev-server --devtool eval --progress --colors --content-base dist --hot --inline --display-error-details --port 4040",
     "eslint": "eslint --ext .js,.jsx src",
